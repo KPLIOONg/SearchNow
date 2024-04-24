@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SearchNow.com</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f9f9f9;
+        margin: 0;
+        padding: 0;
+    }
+    .container {
+        max-width: 800px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+    }
+    h1 {
+        color: #333;
+        text-align: center;
+    }
+    .search-form {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    .search-input {
+        padding: 10px;
+        width: 70%;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    .search-btn {
+        padding: 10px 20px;
+        background-color: #4CAF50;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .search-results {
+        background-color: #f9f9f9;
+        padding: 20px;
+        border-radius: 5px;
+    }
+    .search-result {
+        margin-bottom: 10px;
+    }
+    .search-result h3 {
+        margin-bottom: 5px;
+    }
+    .search-result p {
+        margin-top: 0;
+    }
+    .search-result a {
+        text-decoration: none;
+        color: #333;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>SearchNow</h1>
+    <div class="search-form">
+        <form id="searchForm" onsubmit="search(event)">
+            <input type="text" id="searchInput" class="search-input" placeholder="Enter your search query...">
+            <button type="submit" class="search-btn">Search</button>
+        </form>
+    </div>
+    <div class="search-results" id="searchResults">
+        <!-- Search results will be displayed here -->
+    </div>
+</div>
+
+<script>
+    function search(event) {
+        event.preventDefault();
+        var query = document.getElementById("searchInput").value;
+        var cx = "130cd2c8b6d0142de"; // Replace with your Programmable Search Engine ID
+        var apiKey = "AIzaSyB0m4yoTfAqFZG3Znb-Q8MMy4ehIjY1wuI"; // Replace with your API Key
+        var url = "https://www.googleapis.com/customsearch/v1?q=" + query + "&cx=" + cx + "&key=" + apiKey;
+
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                displayResults(data.items);
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    function displayResults(results) {
+        var searchResults = document.getElementById("searchResults");
+        searchResults.innerHTML = "";
+
+        results.forEach(result => {
+            var title = result.title;
+            var link = result.link;
+
+            var searchResult = document.createElement("div");
+            searchResult.classList.add("search-result");
+
+            var titleElement = document.createElement("h3");
+            titleElement.textContent = title;
+
+            var linkElement = document.createElement("a");
+            linkElement.href = link;
+            linkElement.textContent = link;
+            linkElement.target = "_blank";
+
+            searchResult.appendChild(titleElement);
+            searchResult.appendChild(linkElement);
+            searchResults.appendChild(searchResult);
+        });
+    }
+</script>
+</body>
+</html>
